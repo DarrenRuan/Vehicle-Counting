@@ -4,9 +4,15 @@ Original Project://github.com/nicholaskajoh/Vehicle-Counting
 Note: The difference between these two projects:
 1. Current project could count different types of vehicles but only YOLO works.
 2. You could specify the position of your counter line: `./counter.py`
-3. TODO: And more trackers: cv2.TrackerBoosting_create(), cv2.TrackerMIL_create(), cv2.TrackerTLD_create(), cv2.TrackerMedianFlow_create(), cv2.TrackerGOTURN_create(), cv2.TrackerMOSSE_create()
+3. How to get the positions of Region of Interest?
+By MATLAB:
+Original Image:
+![](original_image.jpg)
+roipoly:
+![](image_ROI.jpg)
+4. TODO: And more trackers: cv2.TrackerBoosting_create(), cv2.TrackerMIL_create(), cv2.TrackerTLD_create(), cv2.TrackerMedianFlow_create(), cv2.TrackerGOTURN_create(), cv2.TrackerMOSSE_create()
 Tutorial: https://www.learnopencv.com/object-tracking-using-opencv-cpp-python/
-4. TODO: Integrate tensorflow_object_counting_api(https://github.com/ahmetozlu/tensorflow_object_counting_api)
+5. TODO: Integrate tensorflow_object_counting_api(https://github.com/ahmetozlu/tensorflow_object_counting_api)
 
 ![](Hamburg_Hall.jpg)
 
