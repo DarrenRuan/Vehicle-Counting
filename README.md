@@ -1,11 +1,14 @@
 # Video-based Vehicle Counting System
 Original Author: https://github.com/nicholaskajoh/Vehicle-Counting
+
+Note: The difference between these two projects:
+1. Current project could count different types of vehicles but only YOLO works.
+
 ![](Hamburg_Hall.jpg)
 
 ## Setup
 - Install Python 3 on your machine.
-- Clone this repo `git@github.com:nicholaskajoh/Vehicle-Counting.git`.
-- Get video footage of a traffic scene ([sample videos](https://drive.google.com/drive/folders/1h8ANowkfm4TXGDg7R5Z6rnosySVc-Ht7?usp=sharing)).
+- Clone this repo `git@github.com:DarrenRuan/Vehicle-Counting.git`.
 - Create and/or use a virtual environment.
 - Run `pip install -r requirements.txt` to install dependencies.
 
