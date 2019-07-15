@@ -1,5 +1,5 @@
 # Video-based Vehicle Counting System
-Original Project://github.com/nicholaskajoh/Vehicle-Counting
+Original Project https://github.com/nicholaskajoh/Vehicle-Counting
 
 Note: The difference between these two projects:
 1. Current project could count different types of vehicles but only YOLO works.
