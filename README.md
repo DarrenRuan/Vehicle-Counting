@@ -1,16 +1,16 @@
 # Video-based Vehicle Counting System
-Original Author: https://github.com/nicholaskajoh/Vehicle-Counting
+Original Project://github.com/nicholaskajoh/Vehicle-Counting
 
 Note: The difference between these two projects:
 1. Current project could count different types of vehicles but only YOLO works.
-2. TODO: And more trackers: cv2.TrackerBoosting_create(), cv2.TrackerMIL_create(), cv2.TrackerTLD_create(), cv2.TrackerMedianFlow_create(), cv2.TrackerGOTURN_create(), cv2.TrackerMOSSE_create()
+2. You could specify the position of your counter line: `./counter.py`
+3. TODO: And more trackers: cv2.TrackerBoosting_create(), cv2.TrackerMIL_create(), cv2.TrackerTLD_create(), cv2.TrackerMedianFlow_create(), cv2.TrackerGOTURN_create(), cv2.TrackerMOSSE_create()
 Tutorial: https://www.learnopencv.com/object-tracking-using-opencv-cpp-python/
-3. TODO: 
+4. TODO: Integrate tensorflow_object_counting_api(https://github.com/ahmetozlu/tensorflow_object_counting_api)
 
 ![](Hamburg_Hall.jpg)
 
 ## Setup
-- Install Python 3 on your machine.
 - Clone this repo `git@github.com:DarrenRuan/Vehicle-Counting.git`.
 - Create and/or use a virtual environment.
 - Run `pip install -r requirements.txt` to install dependencies.
@@ -76,6 +76,11 @@ Custom configuration:
 
 ```
 python Vehicle_Counting.py "./videos/sample_traffic_scene.mp4" --droi "750,400|1150,400|1850,700|1850,1050|500,1050" --showdroi --detector "haarc" --tracker "csrt" --di 5 --mctf 15
+```
+
+YOLOv3 + KCF + Bottom Counter Line + Record
+```
+python Vehicle_Counting.py "./videos/sample_traffic_scene.mp4" --clposition bottom --detector yolo --record
 ```
 
 With camera input:
