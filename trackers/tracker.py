@@ -7,11 +7,11 @@ from blobs.utils import get_centroid, get_area, box_contains_point
 from counter import is_passed_counting_line
 
 
-def create_blob(bounding_box, frame, model):
+def create_blob(bounding_box, frame, model, vehicle_type):
     if model == 'csrt':
-        return csrt_create(bounding_box, frame)
+        return csrt_create(bounding_box, frame, vehicle_type)
     if model == 'kcf':
-        return kcf_create(bounding_box, frame)
+        return kcf_create(bounding_box, frame, vehicle_type)
     if model == 'camshift':
         return camshift_create(bounding_box, frame)
     else:
@@ -26,10 +26,14 @@ def remove_stray_blobs(blobs, matched_blob_ids, mcdf):
             del blobs[_id]
     return blobs
 
-def add_new_blobs(boxes, blobs, frame, tracker, current_blob_id, counting_line, line_position, mcdf):
+def add_new_blobs(boxes, classes_types, blobs, frame, tracker, current_blob_id, counting_line, line_position, mcdf):
     # add new blobs to existing blobs
     matched_blob_ids = []
-    for box in boxes:
+    assert (len(boxes) == len(classes_types))
+    num_boxes = len(boxes)
+    for i in range(num_boxes):
+        box = boxes[i]
+        class_type = classes_types[i]
         box_centroid = get_centroid(box)
         box_area = get_area(box)
         match_found = False
@@ -39,12 +43,12 @@ def add_new_blobs(boxes, blobs, frame, tracker, current_blob_id, counting_line, 
                 if _id not in matched_blob_ids:
                     blob.num_consecutive_detection_failures = 0
                     matched_blob_ids.append(_id)
-                temp_blob = create_blob(box, frame, tracker) # TODO: update blob w/o creating temp blob
+                temp_blob = create_blob(box, frame, tracker, class_type) # TODO: update blob w/o creating temp blob
                 blob.update(temp_blob.bounding_box, temp_blob.tracker)
                 break
 
         if not match_found and not is_passed_counting_line(box_centroid, counting_line, line_position):
-            _blob = create_blob(box, frame, tracker)
+            _blob = create_blob(box, frame, tracker, class_type)
             blobs[current_blob_id] = _blob
             current_blob_id += 1
 

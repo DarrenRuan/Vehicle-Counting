@@ -9,7 +9,8 @@ def get_counting_line(line_position, frame_width, frame_height):
         counting_line_y = round(1 / 5 * frame_height)
         return [(0, counting_line_y), (frame_width, counting_line_y)]
     elif line_position == 'bottom':
-        counting_line_y = round(4 / 5 * frame_height)
+        counting_line_y = round(13 / 20 * frame_height)
+        # counting_line_y = round(1 / 2 * frame_height)
         return [(0, counting_line_y), (frame_width, counting_line_y)]
     elif line_position == 'left':
         counting_line_x = round(1 / 5 * frame_width)

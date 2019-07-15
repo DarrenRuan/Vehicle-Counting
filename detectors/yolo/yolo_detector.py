@@ -10,6 +10,7 @@ def get_bounding_boxes(image):
     classes = None
     with open(os.path.join(__location__, 'classes.txt'), 'r') as classes_file:
         classes = [line.strip() for line in classes_file.readlines()]
+    # classes_of_interest = ['bicycle', 'car', 'motorcycle', 'bus', 'truck']
     classes_of_interest = ['bicycle', 'car', 'motorcycle', 'bus', 'truck']
     
     # create a YOLO v3 DNN model using pre-trained weights
@@ -53,8 +54,10 @@ def get_bounding_boxes(image):
     indices = cv2.dnn.NMSBoxes(boxes, confidences, conf_threshold, nms_threshold)
 
     _bounding_boxes = []
+    _class_types = []
     for i in indices:
         i = i[0]
         _bounding_boxes.append(boxes[i])
+        _class_types.append(classes[class_ids[i]])
 
-    return _bounding_boxes
+    return _bounding_boxes, _class_types

@@ -31,13 +31,23 @@ class VehicleCounter():
         self.f_height, self.f_width, _ = self.frame.shape
         self.frame_count = 0 # number of frames since last detection
         self.vehicle_count = 0 # number of vehicles counted
+        self.car_count = 0
+        self.truck_count = 0
+        self.person_count = 0
+        self.bus_count = 0
+        self.bicycle_count = 0
+
         self.counting_line = None if cl_position == None else get_counting_line(self.cl_position, self.f_width, self.f_height)
 
         # create blobs from initial frame
         droi_frame = get_roi_frame(self.frame, self.droi)
-        initial_bboxes = get_bounding_boxes(droi_frame, self.detector)
-        for box in initial_bboxes:
-            _blob = create_blob(box, frame, self.tracker)
+        initial_bboxes, initial_class_types = get_bounding_boxes(droi_frame, self.detector)
+        assert(len(initial_bboxes) == len(initial_class_types))
+        num_boxes = len(initial_bboxes)
+        for i in range(num_boxes):
+            box = initial_bboxes[i]
+            class_type = initial_class_types[i]
+            _blob = create_blob(box, frame, self.tracker, class_type)
             self.blobs[self.blob_id] = _blob
             self.blob_id += 1
 
@@ -62,15 +72,24 @@ class VehicleCounter():
 
             # count vehicles that have left the frame if no counting line exists
             # or those that have passed the counting line if one exists
-            if (self.counting_line == None and \
-                    (blob.num_consecutive_tracking_failures == self.mctf or blob.num_consecutive_detection_failures == mcdf) and \
+            if (self.counting_line == None and
+                    (blob.num_consecutive_tracking_failures == self.mctf or blob.num_consecutive_detection_failures == self.mcdf) and
                     not blob.counted) \
                         or \
-                    (self.counting_line != None and \
-                    is_passed_counting_line(blob.centroid, self.counting_line, self.cl_position) and \
+                    (self.counting_line != None and
+                    is_passed_counting_line(blob.centroid, self.counting_line, self.cl_position) and
                     not blob.counted):
                 blob.counted = True
                 self.vehicle_count += 1
+                # classes_of_interest = ['bicycle', 'car', 'motorcycle', 'bus', 'truck', 'person']
+                if blob.vehicle_type == 'bicycle':
+                    self.bicycle_count += 1
+                elif blob.vehicle_type == 'car':
+                    self.car_count += 1
+                elif blob.vehicle_type == 'truck':
+                    self.truck_count += 1
+                elif blob.vehicle_type == 'bus':
+                    self.bus_count += 1
                 log.append({'blob_id': _id, 'count': self.vehicle_count, 'datetime': datetime.now()})
 
             if blob.num_consecutive_tracking_failures >= self.mctf:    
@@ -80,8 +99,8 @@ class VehicleCounter():
         if self.frame_count >= self.di:
             # rerun detection
             droi_frame = get_roi_frame(self.frame, self.droi)
-            boxes = get_bounding_boxes(droi_frame, self.detector)
-            self.blobs, current_blob_id = add_new_blobs(boxes, self.blobs, self.frame, self.tracker, self.blob_id, self.counting_line, self.cl_position, self.mcdf)
+            boxes, classes_types = get_bounding_boxes(droi_frame, self.detector)
+            self.blobs, current_blob_id = add_new_blobs(boxes, classes_types, self.blobs, self.frame, self.tracker, self.blob_id, self.counting_line, self.cl_position, self.mcdf)
             self.blob_id = current_blob_id
             self.blobs = remove_duplicates(self.blobs)
             self.frame_count = 0
@@ -97,12 +116,18 @@ class VehicleCounter():
         for _id, blob in self.blobs.items():
             (x, y, w, h) = [int(v) for v in blob.bounding_box]
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            cv2.putText(frame, 'v_' + str(_id), (x, y - 2), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+            cv2.putText(frame, 'v_' + str(_id) + '(' + str(blob.vehicle_type) + ')', (x, y - 2), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
         # draw counting line
         if self.counting_line != None:
-            cv2.line(frame, self.counting_line[0], self.counting_line[1], (0, 255, 0), 3)
+            cv2.line(frame, self.counting_line[0], self.counting_line[1], (255, 215, 0), 3)
         # display vehicle count
-        cv2.putText(frame, 'Count: ' + str(self.vehicle_count), (20, 60), cv2.FONT_HERSHEY_DUPLEX, 2, (255, 0, 0), 2, cv2.LINE_AA)
+        text_org_y = 60
+        cv2.putText(frame, 'Count: ' + str(self.vehicle_count), (20, text_org_y), cv2.FONT_HERSHEY_DUPLEX, 1.5, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, 'Cars_count: ' + str(self.car_count), (20, text_org_y*2), cv2.FONT_HERSHEY_DUPLEX, 1.5, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, 'Trucks_count: ' + str(self.truck_count), (20, text_org_y*3), cv2.FONT_HERSHEY_DUPLEX, 1.5, (0, 0, 255), 2,
+                    cv2.LINE_AA)
+        cv2.putText(frame, 'Bicycles_count: ' + str(self.bicycle_count), (20, text_org_y*4), cv2.FONT_HERSHEY_DUPLEX, 1.5, (0, 0, 255), 2,
+                    cv2.LINE_AA)
         # show detection roi
         if self.show_droi:
             frame = draw_roi(frame, self.droi)
@@ -143,6 +168,9 @@ if __name__ == '__main__':
 
     # capture traffic scene video
     video = int(args.video) if args.iscam else args.video
+    if not args.iscam:
+        video_name = args.video.split("\\")[-1].strip('.mp4')
+
     cap = cv2.VideoCapture(video)
     if not cap.isOpened():
         sys.exit('Error capturing video.')
@@ -169,12 +197,12 @@ if __name__ == '__main__':
 
     if args.record:
         # initialize video object and log file to record counting
-        output_video_path='./videos/output.avi'
-        output_video = cv2.VideoWriter(output_video_path, \
-                                            cv2.VideoWriter_fourcc('M','J','P','G'), \
-                                            30, \
+        output_video_path='./videos/' + video_name +'_output.avi'
+        output_video = cv2.VideoWriter(output_video_path,
+                                            cv2.VideoWriter_fourcc('X','2','6','4'),
+                                            30,
                                             (f_width, f_height))
-        log_file_name='log.txt'
+        log_file_name = video_name + '_log.txt'
         with contextlib.suppress(FileNotFoundError):
             os.remove(log_file_name)
         log_file = open(log_file_name, 'a')
@@ -183,7 +211,8 @@ if __name__ == '__main__':
 
     # main loop
     print('VCS running...')
-    while args.iscam or cap.get(cv2.CAP_PROP_POS_FRAMES) + 1 < cap.get(cv2.CAP_PROP_FRAME_COUNT):
+    while args.iscam or cap.isOpened():
+    # while args.iscam or cap.get(cv2.CAP_PROP_POS_FRAMES) + 1 < cap.get(cv2.CAP_PROP_FRAME_COUNT):
         if ret:
             log = vehicle_counter.count(frame)
             output_frame = vehicle_counter.visualize()
@@ -210,6 +239,8 @@ if __name__ == '__main__':
             break
         
         ret, frame = cap.read()
+        # print("cap.get(cv2.CAP_PROP_POS_FRAMES):", cap.get(cv2.CAP_PROP_POS_FRAMES))
+        # print("cap.get(cv2.CAP_PROP_FRAME_COUNT):", cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
     # end capture, close window, close log file and video object if any
     cap.release()

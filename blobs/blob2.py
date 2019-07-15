@@ -2,10 +2,11 @@ from blobs.utils import get_centroid, get_area
 
 
 class Blob:
-    def __init__(self, _bounding_box, _tracker):
+    def __init__(self, _bounding_box, _tracker, _type):
         self.bounding_box = _bounding_box
         self.centroid = get_centroid(_bounding_box)
         self.area = get_area(_bounding_box)
+        self.vehicle_type = _type
         self.tracker = _tracker
         self.num_consecutive_tracking_failures = 0
         self.num_consecutive_detection_failures = 0
