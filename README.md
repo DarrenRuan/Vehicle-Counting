@@ -1,6 +1,6 @@
 # Video-based Vehicle Counting System
 Original Author: https://github.com/nicholaskajoh/Vehicle-Counting
-![](vehicle_counting.png)
+![]()
 
 ## Setup
 - Install Python 3 on your machine.
