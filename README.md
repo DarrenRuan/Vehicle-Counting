@@ -99,14 +99,14 @@ __NB:__ You can press the `s` key when the program is running to capture a scree
 
 ## How it works
 The vehicle counting system is made up of three main components: 
-1. a detector
-Input: a frame from a certain video or an image
-Output: the locations of bounding boxes and the types of those bounding boxes
-2. a tracker
-Input: a new frame
-Output: a new bounding box for each object
-3. a counter
-Input: centroid and the position of the counting line
-Output: whether a bounding box passed the line or not
+1. a detector <br>
+Input: a frame from a certain video or an image <br>
+Output: the locations of bounding boxes and the types of those bounding boxes <br>
+2. a tracker <br>
+Input: a new frame <br>
+Output: a new bounding box for each object <br>
+3. a counter <br>
+Input: centroid and the position of the counting line <br>
+Output: whether a bounding box passed the line or not <br>
 
 The detector identifies vehicles in a given frame of video and returns a list of bounding boxes and a list of vehicles types around the vehicles to the tracker. The tracker uses the bounding boxes to track the vehicles in subsequent frames. The detector is also used to update trackers periodically to ensure that they are still tracking the vehicles correctly. The counter draws a counting lines across the road. When a vehicle crosses the line, the vehicle count is incremented.
