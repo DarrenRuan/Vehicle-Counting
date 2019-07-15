@@ -3,6 +3,9 @@ Original Author: https://github.com/nicholaskajoh/Vehicle-Counting
 
 Note: The difference between these two projects:
 1. Current project could count different types of vehicles but only YOLO works.
+2. TODO: And more trackers: cv2.TrackerBoosting_create(), cv2.TrackerMIL_create(), cv2.TrackerTLD_create(), cv2.TrackerMedianFlow_create(), cv2.TrackerGOTURN_create(), cv2.TrackerMOSSE_create()
+Tutorial: https://www.learnopencv.com/object-tracking-using-opencv-cpp-python/
+3. TODO: 
 
 ![](Hamburg_Hall.jpg)
 
