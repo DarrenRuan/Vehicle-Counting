@@ -199,10 +199,10 @@ if __name__ == '__main__':
         # initialize video object and log file to record counting
         output_video_path='./videos/' + video_name +'_output.avi'
         output_video = cv2.VideoWriter(output_video_path,
-                                            cv2.VideoWriter_fourcc('X','2','6','4'),
+                                            cv2.VideoWriter_fourcc('m', 'p', '4', 'v'),
                                             30,
                                             (f_width, f_height))
-        log_file_name = video_name + '_log.txt'
+        log_file_name = './' + video_name + '_log.txt'
         with contextlib.suppress(FileNotFoundError):
             os.remove(log_file_name)
         log_file = open(log_file_name, 'a')
