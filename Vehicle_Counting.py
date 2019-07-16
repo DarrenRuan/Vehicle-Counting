@@ -211,8 +211,8 @@ if __name__ == '__main__':
 
     # main loop
     print('VCS running...')
-    while args.iscam or cap.isOpened():
-    # while args.iscam or cap.get(cv2.CAP_PROP_POS_FRAMES) + 1 < cap.get(cv2.CAP_PROP_FRAME_COUNT):
+    # while args.iscam or cap.isOpened():
+    while args.iscam or cap.get(cv2.CAP_PROP_POS_FRAMES) + di < cap.get(cv2.CAP_PROP_FRAME_COUNT):
         if ret:
             log = vehicle_counter.count(frame)
             output_frame = vehicle_counter.visualize()
