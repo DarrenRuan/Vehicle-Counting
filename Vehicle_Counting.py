@@ -169,8 +169,8 @@ if __name__ == '__main__':
     # capture traffic scene video
     video = int(args.video) if args.iscam else args.video
     if not args.iscam:
-        video_name = args.video.split("\\")[-1].strip('.mp4')
-
+        video_name = args.video.split("/")[-1].strip('.mp4')
+    print("Video Name:", video_name)
     cap = cv2.VideoCapture(video)
     if not cap.isOpened():
         sys.exit('Error capturing video.')
@@ -198,11 +198,11 @@ if __name__ == '__main__':
     if args.record:
         # initialize video object and log file to record counting
         output_video_path='./videos/' + video_name +'_output.avi'
-        output_video = cv2.VideoWriter(output_video_path,
-                                            cv2.VideoWriter_fourcc('m', 'p', '4', 'v'),
-                                            30,
-                                            (f_width, f_height))
-        log_file_name = './' + video_name + '_log.txt'
+        # output_video = cv2.VideoWriter(output_video_path,
+        #                                     cv2.VideoWriter_fourcc('m', 'p', '4', 'v'),
+        #                                     30,
+        #                                     (f_width, f_height))
+        log_file_name = '/Users/darren/Vehicle-Counting/output/' + video_name + '_log.txt'
         with contextlib.suppress(FileNotFoundError):
             os.remove(log_file_name)
         log_file = open(log_file_name, 'a')
@@ -218,7 +218,7 @@ if __name__ == '__main__':
             output_frame = vehicle_counter.visualize()
 
             if args.record:
-                output_video.write(output_frame)
+                # output_video.write(output_frame)
                 for item in log:
                     _row = '{0}, {1}, {2}\n'.format('v_' + str(item['blob_id']), item['count'], item['datetime'])
                     log_file.write(_row)
@@ -248,5 +248,5 @@ if __name__ == '__main__':
         cv2.destroyAllWindows()
     if args.record:
         log_file.close()
-        output_video.release()
+        # output_video.release()
     print('End of video.')
