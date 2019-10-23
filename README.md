@@ -13,6 +13,7 @@ roipoly:
 4. TODO: And more trackers: cv2.TrackerBoosting_create(), cv2.TrackerMIL_create(), cv2.TrackerTLD_create(), cv2.TrackerMedianFlow_create(), cv2.TrackerGOTURN_create(), cv2.TrackerMOSSE_create()
 Tutorial: https://www.learnopencv.com/object-tracking-using-opencv-cpp-python/
 5. TODO: Integrate tensorflow_object_counting_api(https://github.com/ahmetozlu/tensorflow_object_counting_api)
+6. TODO: Make Tracker: CamShift work properly. There might be something wrong with this tracker.
 
 ![](Hamburg_Hall.jpg)
 
