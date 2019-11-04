@@ -21,6 +21,10 @@ if __name__ == '__main__':
     if os.path.exists("./videos"):
         videos_list = os.listdir("./videos/")
         for video in videos_list:
-            command_current = "/Users/darren/Box/June_2018/Hamburg_Hall1_050102062018/" + str(video)
-            command_current += " --clposition bottom --detector yolo --record --headless"
-            os.system(command_current)
+            if ".mp4" in video:
+                command_current = "python Vehicle_Counting.py "
+                command_current += current_wd + "/videos/" + video
+                command_current += " --clposition bottom --detector yolo --record --headless"
+                print("Current Command:", command_current)
+                os.system(command_current)
+                print(video+" is done")
