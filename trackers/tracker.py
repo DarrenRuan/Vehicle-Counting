@@ -17,6 +17,7 @@ def create_blob(bounding_box, frame, model, vehicle_type):
     else:
         raise Exception('Invalid tracker model/algorithm specified (options: csrt, kcf, camshift)')
 
+
 def remove_stray_blobs(blobs, matched_blob_ids, mcdf):
     # remove blobs that hang after a tracked object has left the frame
     for _id, blob in list(blobs.items()):
@@ -25,6 +26,7 @@ def remove_stray_blobs(blobs, matched_blob_ids, mcdf):
         if blob.num_consecutive_detection_failures > mcdf:
             del blobs[_id]
     return blobs
+
 
 def add_new_blobs(boxes, classes_types, blobs, frame, tracker, current_blob_id, counting_line, line_position, mcdf):
     # add new blobs to existing blobs
@@ -54,6 +56,7 @@ def add_new_blobs(boxes, classes_types, blobs, frame, tracker, current_blob_id, 
 
     blobs = remove_stray_blobs(blobs, matched_blob_ids, mcdf)
     return blobs, current_blob_id
+
 
 def remove_duplicates(blobs):
     for id_a, blob_a in list(blobs.items()):

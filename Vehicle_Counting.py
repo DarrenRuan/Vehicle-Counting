@@ -7,6 +7,8 @@ from detectors.detector import get_bounding_boxes
 import uuid
 import os
 import contextlib
+import pandas as pd
+import csv
 from datetime import datetime
 import argparse
 from utils.detection_roi import get_roi_frame, draw_roi
@@ -164,6 +166,7 @@ if __name__ == '__main__':
     parser.add_argument('--headless', action='store_true', help='run VCS without UI display')
     parser.add_argument('--clposition', help='position of counting line (options: top, bottom, \
                         left, right | default: bottom)')
+    parser.add_argument('--sample', default=False, type=bool)
     args = parser.parse_args()
 
     # capture traffic scene video
@@ -223,6 +226,11 @@ if __name__ == '__main__':
                     _row = '{0}, {1}, {2}\n'.format('v_' + str(item['blob_id']), item['count'], item['datetime'])
                     log_file.write(_row)
                     log_file.flush()
+
+                if args.sample:
+                    with open("sample_stat.csv", "a+") as csv_file:
+                        writer = csv.writer(csv_file)
+                        writer.writerow([video_name, log[-1]['count']])
 
             if not args.headless:
                 resized_frame = cv2.resize(output_frame, (858, 480))
