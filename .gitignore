@@ -6,3 +6,5 @@ screenshots/*
 videos/*
 !videos/.gitkeep
 log.txt
+*.mp4
+log/*.txt
