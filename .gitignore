@@ -8,3 +8,4 @@ videos/*
 log.txt
 *.mp4
 log/*.txt
+.idea
