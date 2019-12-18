@@ -205,7 +205,7 @@ if __name__ == '__main__':
         #                                     cv2.VideoWriter_fourcc('m', 'p', '4', 'v'),
         #                                     30,
         #                                     (f_width, f_height))
-        log_file_name = '/Users/darren/Vehicle-Counting/output/' + video_name + '_log.txt'
+        log_file_name = './output/' + video_name + '_log.txt'
         with contextlib.suppress(FileNotFoundError):
             os.remove(log_file_name)
         log_file = open(log_file_name, 'a')

@@ -7,12 +7,36 @@ def get_counting_line(line_position, frame_width, frame_height):
 
     if line_position == 'top':
         # counting_line_y = round(1 / 5 * frame_height)
-        counting_line_y = round(29 / 128 * frame_height)
+
+        # Hamburg_Hall_080007032018_000,top
+        # counting_line_y = round(3 / 5 * frame_height)
+
+        # Parking1_083915032018_000, top
+        # counting_line_y = round(13 / 20 * frame_height)
+
+        # Hamburg_Hall1_073301102019_000, top
+        counting_line_y = round(3 / 4 * frame_height)
+
         return [(0, counting_line_y), (frame_width, counting_line_y)]
     elif line_position == 'bottom':
+        # Hamburg_Hall_080007032018_000, bottom
         # counting_line_y = round(13 / 20 * frame_height)
-        # counting_line_y = round(1 / 2 * frame_height)
+
+        # Parking1_083915032018_000, bottom
+        # counting_line_y = round(2 / 3 * frame_height)
+
+        # Hamburg_Hall1_064721092018_020, bottom
+        # counting_line_y = round(3 / 4 * frame_height)
+
+        # Hamburg_Hall1_073301102019_000, bottom
+        # counting_line_y = round(7 / 8 * frame_height)
+
+        # Parking2_050101102019_025, bottom
         counting_line_y = round(31 / 128 * frame_height)
+
+        # counting_line_y = round(1 / 2 * frame_height)
+        # counting_line_y = round(31 / 128 * frame_height)
+        # counting_line_y = round(14 / 16 * frame_height)
         return [(0, counting_line_y), (frame_width, counting_line_y)]
     elif line_position == 'left':
         counting_line_x = round(1 / 5 * frame_width)

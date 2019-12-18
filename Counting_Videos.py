@@ -26,5 +26,8 @@ if __name__ == '__main__':
                 command_current += current_wd + "/videos/" + video
                 command_current += " --clposition bottom --detector yolo --record --headless"
                 print("Current Command:", command_current)
+                sys.stdout.flush()
+
                 os.system(command_current)
                 print(video+" is done")
+                sys.stdout.flush()
