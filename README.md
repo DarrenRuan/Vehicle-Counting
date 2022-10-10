@@ -2,7 +2,7 @@
 Original Project https://github.com/nicholaskajoh/Vehicle-Counting
 
 Note: The difference between these two projects:
-1. Current project could count different types of vehicles but only YOLO works.
+1. Current project could count different types of vehicles (YOLO).
 2. You could specify the position of your counter line: `./counter.py`
 3. How to get the positions of Region of Interest?
 By MATLAB:
